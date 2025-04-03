@@ -1,65 +1,69 @@
-
--- J. Rachlin
--- Database Design
--- Importing data into MySQL
-
--- Step 1. Configure the server to allow data to be imported 
---  from anywhere on your local file system
-
 show variables where variable_name like '%local%';
 set global local_infile=ON;
 
--- Step 2. Configure the MySQL client to also process
--- locally imported files. To do this:
--- a) Close this connection. Edit your root connection.
--- b) Under the advanced tab add the line OPT_LOCAL_INFILE=1
--- c) Reopen the root connection
+drop database if exists disasters;
+CREATE DATABASE disasters;
+use disasters;
 
+CREATE TABLE emdat (
+    disaster_id VARCHAR(50),
+    historic VARCHAR(3),
+    classification_key VARCHAR(50),
+    disaster_group VARCHAR(50),
+    disaster_subgroup VARCHAR(50),
+    disaster_type VARCHAR(50),
+    disaster_subtype VARCHAR(50),
+    external_ids VARCHAR(255),
+    event_name VARCHAR(255),
+    iso VARCHAR(10),
+    country VARCHAR(100),
+    subregion VARCHAR(100),
+    region VARCHAR(100),
+    location TEXT,
+    origin VARCHAR(50),
+    associated_types TEXT,
+    ofda_response VARCHAR(3),
+    appeal VARCHAR(3),
+    declaration VARCHAR(3),
+    aid_contribution DOUBLE,
+    magnitude DOUBLE,
+    magnitude_scale VARCHAR(50),
+    latitude DOUBLE,
+    longitude DOUBLE,
+    river_basin VARCHAR(100),
+    start_year INT,
+    start_month INT,
+    start_day INT,
+    end_year INT,
+    end_month INT,
+    end_day INT,
+    total_deaths INT,
+    no_injured INT,
+    no_affected INT,
+    no_homeless INT,
+    total_affected INT,
+    reconstruction_costs DOUBLE,
+    reconstruction_costs_adjusted DOUBLE,
+    insured_damage DOUBLE,
+    insured_damage_adjusted DOUBLE,
+    total_damage DOUBLE,
+    total_damage_adjusted DOUBLE,
+    cpi DOUBLE,
+    admin_units VARCHAR(255),
+    entry_date DATE,
+    last_update DATE
+);
 
--- Step 3. Create the database
-DROP DATABASE IF EXISTS gad;
-CREATE DATABASE gad;
-
-
--- Step 4. Make gad the active database
-USE gad;
-
-
--- Step 5. Create a table schema to hold the data
-
-CREATE TABLE gad (
-  gad_id int, 
-  association text,
-  phenotype text,
-  disease_class text,
-  chromosome text,
-  chromosome_band text,
-  dna_start int,
-  dna_end int,
-  gene text,
-  gene_name text,
-  reference text,
-  pubmed_id int,
-  year int,
-  population text
-) ;
-
--- Step 6. import your data!
--- file path for windows would look something like 'C:\\users\\carterithier\\Downloads\\gad.csv
 LOAD DATA LOCAL 
-INFILE '/Users/carterithier/Downloads/gad.csv' -- mac file path version
-INTO TABLE gad
+INFILE '/Users/shefaliverma/Downloads/EMDATdata1960-2025allcountries.csv' 
+INTO TABLE emdat
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 ROWS;
 
-use gad;
+
+use disasters;
 -- Step 7. Verify that you imported 39910 rows.
-SELECT count(*) FROM gad;
+SELECT count(*) FROM emdat;
 
 -- Step 8. Verify that the data looks good!
-SELECT * FROM gad;
-
-
-
-
-
+SELECT * FROM emdat;
