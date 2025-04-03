@@ -70,3 +70,113 @@ SELECT count(*) FROM emdat;
 
 -- Step 8. Verify that the data looks good!
 SELECT * FROM emdat;
+
+
+
+UPDATE emdat
+SET
+    reconstruction_costs = NULL
+WHERE reconstruction_costs = 0;
+
+UPDATE emdat
+SET
+    reconstruction_costs_adjusted = NULL
+WHERE reconstruction_costs_adjusted = 0;
+
+UPDATE emdat
+SET
+    insured_damage = NULL
+WHERE insured_damage = 0;
+
+UPDATE emdat
+SET
+    insured_damage_adjusted = NULL
+WHERE insured_damage_adjusted = 0;
+
+UPDATE emdat
+SET
+    total_damage = NULL
+WHERE total_damage = 0;
+
+UPDATE emdat
+SET
+    total_damage_adjusted = NULL
+WHERE total_damage_adjusted = 0;
+
+UPDATE emdat
+SET
+    end_day = NULL
+WHERE end_day = 0;
+
+UPDATE emdat
+SET
+    start_day = NULL
+WHERE start_day = 0;
+
+UPDATE emdat
+SET
+    start_month = NULL
+WHERE start_month = 0;
+
+UPDATE emdat
+SET
+    end_month = NULL
+WHERE end_month = 0;
+
+UPDATE emdat
+SET
+    start_year = NULL
+WHERE start_year = 0;
+
+UPDATE emdat
+SET
+    end_year = NULL
+WHERE end_year = 0;
+
+UPDATE emdat
+SET
+    total_deaths = NULL
+WHERE total_deaths = 0;
+
+UPDATE emdat
+SET
+    no_injured = NULL
+WHERE no_injured = 0;
+
+UPDATE emdat
+SET
+    no_affected = NULL
+WHERE no_affected = 0;
+
+UPDATE emdat
+SET
+    no_homeless = NULL
+WHERE no_homeless = 0;
+
+UPDATE emdat
+SET
+    total_affected = NULL
+WHERE total_affected = 0;
+
+UPDATE emdat
+SET
+    aid_contribution = NULL
+WHERE aid_contribution = 0;
+
+UPDATE emdat
+SET
+    latitude = NULL
+WHERE latitude = 0;
+
+UPDATE emdat
+SET
+    magnitude = NULL
+WHERE magnitude = 0;
+
+UPDATE emdat
+SET
+    longitude = NULL
+WHERE longitude = 0;
+
+
+select * from emdat;
