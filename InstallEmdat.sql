@@ -1,3 +1,6 @@
+-- FILE TO INSTALL EMDAT DATABASE ON MYSQL, NEED TO INSERT YOUR OWN 
+-- FILEPATH WHERE IT SAYS '/Users/shefaliverma/Downloads/EMDATdata1960-2025allcountries.csv' "
+
 show variables where variable_name like '%local%';
 set global local_infile=ON;
 
