@@ -1,9 +1,9 @@
 set global local_infile = on;
 
 -- create the database
-drop database if exists disaster;
-create database disaster;
-use disaster;
+drop database if exists disasters;
+create database disasters;
+use disasters;
 
 -- create the gdp per capita table
 
