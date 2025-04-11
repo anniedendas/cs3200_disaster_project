@@ -9,7 +9,7 @@ CREATE DATABASE disasters;
 use disasters;
 
 CREATE TABLE emdat (
-    disaster_id VARCHAR(50),
+    disaster_id VARCHAR(50) PRIMARY KEY,
     historic VARCHAR(3),
     classification_key VARCHAR(50),
     disaster_group VARCHAR(50),
@@ -58,7 +58,7 @@ CREATE TABLE emdat (
 );
 
 LOAD DATA LOCAL 
-INFILE '/Users/shefaliverma/Downloads/EMDATdata1960-2025allcountries.csv' 
+INFILE '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/emdat.csv' 
 INTO TABLE emdat
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 ROWS;
@@ -180,3 +180,4 @@ WHERE longitude = 0;
 
 
 select * from emdat;
+select distinct disaster_subgroup from emdat;
