@@ -5,7 +5,7 @@ show variables where variable_name like '%local%';
 set global local_infile=ON;
 
 drop database if exists disasters;
-CREATE DATABASE disasters;
+create database disasters;
 use disasters;
 
 CREATE TABLE emdat (
@@ -63,15 +63,11 @@ INTO TABLE emdat
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 ROWS;
 
-
-use disasters;
--- Step 7. Verify that you imported 39910 rows.
+-- verify that you imported 16418 rows
 SELECT count(*) FROM emdat;
 
--- Step 8. Verify that the data looks good!
+-- verify that the data looks good
 SELECT * FROM emdat;
-
-
 
 UPDATE emdat
 SET
@@ -178,6 +174,13 @@ SET
     longitude = NULL
 WHERE longitude = 0;
 
+-- dropping the attributes below because they will not be useful in our analysis
+ALTER TABLE emdat
+DROP COLUMN external_ids,
+DROP COLUMN location,
+DROP COLUMN origin,
+DROP COLUMN associated_types,
+DROP COLUMN admin_units;
 
-select * from emdat;
-select distinct disaster_subgroup from emdat;
+-- verify that the columns were dropped
+describe emdat;
