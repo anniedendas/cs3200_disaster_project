@@ -8,6 +8,7 @@ drop database if exists disasters;
 create database disasters;
 use disasters;
 
+-- create emdat table
 drop table if exists emdat;
 CREATE TABLE emdat (
     disaster_id VARCHAR(50) primary key,
@@ -58,8 +59,9 @@ CREATE TABLE emdat (
     last_update DATE
 );
 
+-- populate emdat table
 LOAD DATA LOCAL 
-INFILE '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/emdat.csv' 
+INFILE '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/matched_emdat.csv' 
 INTO TABLE emdat
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 ROWS;
@@ -70,6 +72,7 @@ SELECT count(*) FROM emdat;
 -- verify that the data looks good
 SELECT * FROM emdat;
 
+-- update any 0 values to be NULL
 UPDATE emdat
 SET
     reconstruction_costs = NULL
@@ -198,4 +201,25 @@ update emdat
 set total_damage_adjusted = total_damage_adjusted * 0.7149
 where total_damage_adjusted is not null;
 
-select * from emdat;
+-- create ISO table (maps ISO codes to country names)
+drop table if exists iso;
+create table iso (
+	iso_code varchar(3) primary key,
+    country_name varchar(255) not null
+);
+
+-- populate the table
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/iso.csv'
+into table iso
+fields terminated by ','
+enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows
+(iso_code, country_name);
+
+-- verify that you imported 205 rows
+select count(*) from iso;
+
+-- verify that the data looks good
+select * from iso;
+
