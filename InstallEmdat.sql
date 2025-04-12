@@ -201,6 +201,121 @@ update emdat
 set total_damage_adjusted = total_damage_adjusted * 0.7149
 where total_damage_adjusted is not null;
 
+-- create GDP table
+drop table if exists gdp;
+create table gdp (
+    iso_code char(3),
+    year int,
+    gdp_per_capita double
+);
+
+-- populate GDP table
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_gdp_per_capita.csv'
+into table gdp
+fields terminated by ',' optionally enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows
+(iso_code, year, @gdp_val)
+set gdp_per_capita = nullif(@gdp_val, '');
+
+-- verify that you imported 13120 rows
+select count(*) from gdp;
+
+-- verify that the data looks good
+select * from gdp;
+
+-- create urban population table
+drop table if exists urb_pop;
+create table urb_pop (
+    iso_code char(3),
+    year int,
+    urb_pop_percentage double
+);
+
+-- populate urban population table
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_urban_pop_percentage.csv'
+into table urb_pop
+fields terminated by ',' optionally enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows
+(iso_code, year, @urb_pop_percentage)
+set urb_pop_percentage = nullif(@urb_pop_percentage, '');
+
+-- verify that you imported 13120 rows
+select count(*) from urb_pop;
+
+-- verify that the data looks good
+select * from urb_pop;
+
+-- create literacy rates table
+drop table if exists lit_rates;
+create table lit_rates (
+    iso_code char(3),
+    year int,
+    rate double
+);
+
+-- populate literacy rates table
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_literacy_rates.csv'
+into table lit_rates
+fields terminated by ',' optionally enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows
+(iso_code, year, @rate)
+set rate = nullif(@rate, '');
+
+-- verify that you imported 13120 rows
+select count(*) from lit_rates;
+
+-- verify that the data looks good
+select * from lit_rates;
+
+-- create life expectancy at birth table
+drop table if exists life_exp;
+create table life_exp (    
+	iso_code char(3),
+    year int,
+    expectancy double
+);
+
+-- populate life expectancy at birth table
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_life_expectancy.csv'
+into table life_exp
+fields terminated by ',' optionally enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows
+(iso_code, year, @expectancy)
+set expectancy = nullif(@expectancy, '');
+
+-- verify that you imported 13120 rows
+select count(*) from life_exp;
+
+-- verify that the data looks good
+select * from life_exp;
+
+-- create international tourism table
+drop table if exists int_tour;
+create table int_tour (    
+	iso_code char(3),
+    year int,
+    tourism double
+);
+
+-- populate tourism rates table
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_tourism.csv'
+into table int_tour
+fields terminated by ',' optionally enclosed by '"'
+lines terminated by '\n'
+ignore 1 rows
+(iso_code, year, @tourism)
+set tourism = nullif(@tourism, '');
+
+-- verify that you imported 13120 rows
+select count(*) from int_tour;
+
+-- verify that the data looks good
+select * from int_tour;
+
 -- create ISO table (maps ISO codes to country names)
 drop table if exists iso;
 create table iso (
@@ -214,12 +329,13 @@ into table iso
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
-ignore 1 rows
-(iso_code, country_name);
+ignore 1 rows;
 
 -- verify that you imported 205 rows
 select count(*) from iso;
 
 -- verify that the data looks good
 select * from iso;
+
+
 
