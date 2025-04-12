@@ -8,8 +8,9 @@ drop database if exists disasters;
 create database disasters;
 use disasters;
 
+drop table if exists emdat;
 CREATE TABLE emdat (
-    disaster_id VARCHAR(50) PRIMARY KEY,
+    disaster_id VARCHAR(50) primary key,
     historic VARCHAR(3),
     classification_key VARCHAR(50),
     disaster_group VARCHAR(50),
@@ -175,12 +176,26 @@ SET
 WHERE longitude = 0;
 
 -- dropping the attributes below because they will not be useful in our analysis
-ALTER TABLE emdat
-DROP COLUMN external_ids,
-DROP COLUMN location,
-DROP COLUMN origin,
-DROP COLUMN associated_types,
-DROP COLUMN admin_units;
+alter table emdat
+drop column external_ids,
+drop column location,
+drop column origin,
+drop column associated_types,
+drop column admin_units;
 
--- verify that the columns were dropped
 describe emdat;
+
+-- update existing adjusted columns to reflect constant 2015 usd (based on OECD inflation data)
+update emdat
+set reconstruction_costs_adjusted = reconstruction_costs_adjusted * 0.6837
+where reconstruction_costs_adjusted is not null;
+
+update emdat
+set insured_damage_adjusted = insured_damage_adjusted * 0.6837
+where insured_damage_adjusted is not null;
+
+update emdat
+set total_damage_adjusted = total_damage_adjusted * 0.6837
+where total_damage_adjusted is not null;
+
+select * from emdat;
