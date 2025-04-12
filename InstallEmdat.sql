@@ -187,15 +187,15 @@ describe emdat;
 
 -- update existing adjusted columns to reflect constant 2015 usd (based on OECD inflation data)
 update emdat
-set reconstruction_costs_adjusted = reconstruction_costs_adjusted * 0.6837
+set reconstruction_costs_adjusted = reconstruction_costs_adjusted * 0.7149
 where reconstruction_costs_adjusted is not null;
 
 update emdat
-set insured_damage_adjusted = insured_damage_adjusted * 0.6837
+set insured_damage_adjusted = insured_damage_adjusted * 0.7149
 where insured_damage_adjusted is not null;
 
 update emdat
-set total_damage_adjusted = total_damage_adjusted * 0.6837
+set total_damage_adjusted = total_damage_adjusted * 0.7149
 where total_damage_adjusted is not null;
 
 select * from emdat;
