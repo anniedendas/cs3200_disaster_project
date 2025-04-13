@@ -1,0 +1,201 @@
+iso,country_name,avg_life_expectancy,avg_disasters_per_year
+CHN,China,73.08,17.02
+USA,"United States",76.41,16.29
+IND,India,61.73,11.14
+PHL,Philippines,67.88,10.45
+IDN,Indonesia,65.53,9.93
+RUS,"Russian Federation",66.97,5.86
+BGD,Bangladesh,60.58,5.54
+VNM,"Viet Nam",72.01,5.20
+JPN,Japan,79.77,4.97
+MEX,Mexico,71.31,4.61
+AFG,Afghanistan,57.01,4.60
+BRA,Brazil,68.41,4.55
+AUS,Australia,79.1,4.18
+PAK,Pakistan,62.65,4.15
+IRN,"Iran, Islamic Republic of",67.23,4.00
+COL,Colombia,71.24,3.84
+COD,"Congo, The Democratic Republic of the",54.41,3.74
+NGA,Nigeria,49.1,3.68
+THA,Thailand,73.82,3.67
+FRA,France,79.09,3.63
+PER,Peru,67.72,3.38
+MAC,Macao,80.61,3.00
+KEN,Kenya,58.44,3.00
+HTI,Haiti,57.8,2.91
+ITA,Italy,78.88,2.89
+UGA,Uganda,54.75,2.86
+TUR,Turkey,69.06,2.85
+DEU,Germany,78.74,2.83
+GTM,Guatemala,67.8,2.81
+MOZ,Mozambique,51.52,2.75
+MYS,Malaysia,73.3,2.74
+ETH,Ethiopia,52.9,2.66
+ZAF,"South Africa",60.09,2.59
+SDN,Sudan,56.69,2.59
+BDI,Burundi,54.18,2.58
+ROU,Romania,71.87,2.57
+AGO,Angola,53.66,2.54
+NPL,Nepal,60.69,2.53
+TZA,"Tanzania, United Republic of",56.37,2.47
+LKA,"Sri Lanka",72.22,2.46
+CAN,Canada,78.9,2.44
+ECU,Ecuador,70.45,2.43
+TJK,Tajikistan,65.63,2.43
+GBR,"United Kingdom",78.28,2.41
+HKG,"Hong Kong",74.82,2.41
+ARG,Argentina,73.51,2.39
+YEM,Yemen,64.53,2.38
+CHL,Chile,74.69,2.36
+NER,Niger,53.19,2.34
+SOM,Somalia,51.2,2.33
+MWI,Malawi,52.78,2.32
+BOL,"Bolivia, Plurinational State of",61.21,2.26
+ESP,Spain,79.4,2.25
+MDG,Madagascar,59.55,2.21
+KOR,"Korea, Republic of",73.77,2.18
+BGR,Bulgaria,72.72,2.17
+SSD,"South Sudan",55.21,2.17
+PNG,"Papua New Guinea",61.69,2.15
+ZWE,Zimbabwe,51.53,2.15
+SRB,Serbia,74.81,2.08
+GRC,Greece,77.95,2.07
+NIC,Nicaragua,66.58,2.05
+HND,Honduras,66.96,2.02
+SLV,"El Salvador",68.2,2.00
+DOM,"Dominican Republic",69.34,1.98
+MMR,Myanmar,60.65,1.93
+POL,Poland,75,1.91
+RWA,Rwanda,57.24,1.90
+TCD,Chad,48.12,1.88
+CUB,Cuba,75.18,1.86
+PRK,"Korea, Democratic People's Republic of",68.32,1.84
+HRV,Croatia,75.91,1.82
+DZA,Algeria,67.08,1.82
+VEN,"Venezuela, Bolivarian Republic of",71.28,1.81
+CRI,"Costa Rica",76.16,1.80
+BEL,Belgium,78.13,1.79
+PRY,Paraguay,70.46,1.76
+BIH,"Bosnia and Herzegovina",75.94,1.75
+CZE,Czechia,76.83,1.74
+MNG,Mongolia,65.83,1.73
+PRT,Portugal,76.8,1.72
+NZL,"New Zealand",77.56,1.71
+PAN,Panama,73.76,1.70
+UKR,Ukraine,68.97,1.70
+ZMB,Zambia,52.51,1.70
+KHM,Cambodia,63.81,1.68
+CMR,Cameroon,55.79,1.68
+BFA,"Burkina Faso",51.89,1.68
+MLI,Mali,50.88,1.68
+AZE,Azerbaijan,65.94,1.67
+GHA,Ghana,59.25,1.67
+CAF,"Central African Republic",49.17,1.64
+AUT,Austria,77.67,1.63
+FJI,Fiji,65.57,1.60
+MAR,Morocco,63.36,1.60
+CHE,Switzerland,79.47,1.59
+LAO,"Lao People's Democratic Republic",58.85,1.59
+COG,Congo,58.81,1.59
+VUT,Vanuatu,66.76,1.57
+LUX,Luxembourg,77.45,1.56
+EGY,Egypt,66.01,1.55
+BEN,Benin,55.51,1.54
+SAU,"Saudi Arabia",73.93,1.53
+KGZ,Kyrgyzstan,68.7,1.52
+NLD,Netherlands,78.84,1.50
+PRI,"Puerto Rico",76.09,1.50
+URY,Uruguay,75.91,1.50
+ALB,Albania,75.32,1.50
+VGB,"Virgin Islands, British",74.73,1.50
+LTU,Lithuania,72.6,1.50
+SEN,Senegal,57.53,1.49
+GAB,Gabon,62.35,1.44
+MKD,"North Macedonia",73.97,1.41
+GIN,Guinea,54.43,1.41
+CIV,"Côte d'Ivoire",54.12,1.41
+PYF,"French Polynesia",76.13,1.40
+TCA,"Turks and Caicos Islands",74.51,1.40
+MRT,Mauritania,60.49,1.39
+NAM,Namibia,55.88,1.39
+COM,Comoros,58.49,1.38
+SLE,"Sierra Leone",49.17,1.38
+HUN,Hungary,72.89,1.36
+JAM,Jamaica,70.82,1.36
+SWE,Sweden,79.42,1.33
+FIN,Finland,77.41,1.33
+VIR,"Virgin Islands, U.S.",74.51,1.33
+PSE,"Palestine, State of",73.9,1.33
+NCL,"New Caledonia",68.61,1.33
+TON,Tonga,68.57,1.33
+JOR,Jordan,68.55,1.33
+MDA,"Moldova, Republic of",67.49,1.33
+TUN,Tunisia,66.37,1.33
+BTN,Bhutan,63.72,1.33
+LBR,Liberia,52.21,1.32
+ISL,Iceland,77.71,1.30
+TGO,Togo,55.4,1.30
+DNK,Denmark,76.78,1.29
+GEO,Georgia,71.16,1.29
+SYR,"Syrian Arab Republic",69.17,1.29
+SLB,"Solomon Islands",65.81,1.29
+ISR,Israel,79.26,1.27
+SVK,Slovakia,74.64,1.26
+GUM,Guam,72.48,1.25
+KAZ,Kazakhstan,67.6,1.25
+OMN,Oman,72.68,1.23
+IRQ,Iraq,66.49,1.23
+ARM,Armenia,72.46,1.22
+VCT,"Saint Vincent and the Grenadines",71.87,1.22
+GNB,Guinea-Bissau,49.41,1.21
+SVN,Slovenia,79.03,1.20
+BHS,Bahamas,70.84,1.20
+IRL,Ireland,77.96,1.19
+LBN,Lebanon,74.55,1.18
+TTO,"Trinidad and Tobago",69.92,1.18
+BLZ,Belize,69.2,1.18
+TLS,Timor-Leste,64.66,1.18
+NOR,Norway,79.7,1.17
+CYP,Cyprus,75.99,1.17
+MNE,Montenegro,75.76,1.17
+LCA,"Saint Lucia",69.77,1.16
+MUS,Mauritius,67.95,1.16
+BWA,Botswana,58.79,1.15
+ERI,Eritrea,56.72,1.14
+GMB,Gambia,55.67,1.14
+LSO,Lesotho,51.71,1.14
+CPV,"Cabo Verde",68.38,1.13
+DJI,Djibouti,57.13,1.13
+SWZ,Eswatini,52.1,1.13
+LVA,Latvia,71.88,1.11
+UZB,Uzbekistan,67.64,1.11
+FSM,"Micronesia, Federated States of",70.11,1.10
+BRB,Barbados,74.09,1.09
+ATG,"Antigua and Barbuda",73.06,1.09
+BLR,Belarus,70.36,1.08
+DMA,Dominica,69.46,1.08
+WSM,Samoa,67.44,1.07
+MLT,Malta,82.7,1.00
+QAT,Qatar,80.9,1.00
+ARE,"United Arab Emirates",79.5,1.00
+SGP,Singapore,79.45,1.00
+MAF,"Saint Martin (French part)",78.59,1.00
+KWT,Kuwait,77.8,1.00
+EST,Estonia,75.55,1.00
+SXM,"Sint Maarten (Dutch part)",75.03,1.00
+BMU,Bermuda,74.88,1.00
+BRN,"Brunei Darussalam",73.62,1.00
+SYC,Seychelles,72.55,1.00
+MDV,Maldives,70.51,1.00
+GRD,Grenada,70.47,1.00
+BHR,Bahrain,69.98,1.00
+KNA,"Saint Kitts and Nevis",67.52,1.00
+SUR,Suriname,67.43,1.00
+LBY,Libya,65.3,1.00
+GUY,Guyana,65.14,1.00
+TKM,Turkmenistan,64.41,1.00
+MHL,"Marshall Islands",63.7,1.00
+STP,"Sao Tome and Principe",62.87,1.00
+TUV,Tuvalu,62.07,1.00
+KIR,Kiribati,62.06,1.00
+GNQ,"Equatorial Guinea",55.04,1.00
