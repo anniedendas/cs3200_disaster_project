@@ -37,7 +37,7 @@ select
     sum(e.no_homeless) as total_homeless,
     round(sum(e.no_homeless) / count(e.disaster_id), 2) as avg_homeless_per_cyclone
 from emdat e
-join lit_rates l on e.iso = l.iso_code and e.start_year = l.year
+join lit_rate l on e.iso = l.iso_code and e.start_year = l.year
 join iso i on e.iso = i.iso_code
 where 
     e.no_homeless is not null
