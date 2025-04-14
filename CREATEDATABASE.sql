@@ -1,370 +1,250 @@
--- FILE TO INSTALL EMDAT DATABASE ON MYSQL, NEED TO INSERT YOUR OWN 
--- FILEPATHS WHERE APPLICABLE
-
 show variables where variable_name like '%local%';
-set global local_infile=ON;
+set global local_infile = on;
 
 drop database if exists disasters;
 create database disasters;
 use disasters;
 
+-- iso table
 drop table if exists iso;
 create table iso (
- --   id int primary key auto_increment,
-    iso_code char(3) PRIMARY KEY NOT NULL UNIQUE,
+    iso_code char(3) primary key,
     country_name varchar(255) unique not null
 );
 
--- populate the table
-load data local infile '/Users/emiliasantos/Documents/cs3200/gdp_code.py/iso.csv'
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/iso.csv'
 into table iso
-fields terminated by ',' 
-enclosed by '"' 
-lines terminated by '\n' 
-ignore 1 rows
+fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows
 (iso_code, country_name);
 
+-- insert ISO codes that were missing in this dataset but are present in the World Bank datasets
+insert into iso (iso_code, country_name) values
+('SSD', 'South Sudan'), 
+('SXM', 'Sint Maarten');
 
--- create GDP table
+select * from iso;
+
+-- gdp table
 drop table if exists gdp;
 create table gdp (
-    id varchar(10) PRIMARY KEY NOT NULL,
+    id char(7) primary key,
     iso_code char(3),
     year int,
-    gdp_per_capita double
+    gdp_per_capita double,
+    foreign key (iso_code) references iso(iso_code)
 );
 
--- populate GDP table, please verify you are using the correct filepath
-load data local infile '/Users/emiliasantos/Documents/cs3200/gdp_code.py/wb_gdp_per_capita.csv' 
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_gdp_per_capita.csv'
 into table gdp
+fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' ignore 1 rows
+(iso_code, year, @gdp_val)
+set gdp_per_capita = nullif(@gdp_val, ''), id = concat(iso_code, year);
+
+
+-- emdat table
+drop table if exists emdat;
+create table emdat (
+    disaster_id varchar(50) primary key,
+    historic varchar(3),
+    classification_key varchar(50),
+    disaster_group varchar(50),
+    disaster_subgroup varchar(50),
+    disaster_type varchar(50),
+    disaster_subtype varchar(50),
+    event_name varchar(255),
+    iso varchar(10),
+    country varchar(100),
+    subregion varchar(100),
+    region varchar(100),
+    ofda_response varchar(3),
+    appeal varchar(3),
+    declaration varchar(3),
+    aid_contribution double,
+    magnitude double,
+    magnitude_scale varchar(50),
+    latitude double,
+    longitude double,
+    river_basin varchar(100),
+    start_year int,
+    start_month int,
+    start_day int,
+    end_year int,
+    end_month int,
+    end_day int,
+    total_deaths int,
+    no_injured int,
+    no_affected int,
+    no_homeless int,
+    total_affected int,
+    reconstruction_costs double,
+    reconstruction_costs_adjusted double,
+    insured_damage double,
+    insured_damage_adjusted double,
+    total_damage double,
+    total_damage_adjusted double,
+    cpi double,
+    entry_date date,
+    last_update date,
+    id char(7),
+    foreign key (id) references gdp(id)
+);
+
+-- load data into emdat table
+load data local infile '/users/anniedendas/desktop/spring2025/cs3200/project/data/matched_emdat.csv'
+into table emdat
 fields terminated by ',' optionally enclosed by '"'
 lines terminated by '\n'
 ignore 1 rows
-(iso_code, year, @gdp_val)
-set 
-    gdp_per_capita = nullif(@gdp_val, ''),
-    id = concat(iso_code, year);
+(
+    disaster_id,
+    historic,
+    classification_key,
+    disaster_group,
+    disaster_subgroup,
+    disaster_type,
+    disaster_subtype,
+    @external_ids,
+    event_name,
+    iso,
+    country,
+    subregion,
+    region,
+    @location,
+    @origin,
+    @associated_types,
+    ofda_response,
+    appeal,
+    declaration,
+    @aid_contribution,
+    @magnitude,
+    magnitude_scale,
+    @latitude,
+    @longitude,
+    river_basin,
+    @start_year,
+    @start_month,
+    @start_day,
+    @end_year,
+    @end_month,
+    @end_day,
+    @total_deaths,
+    @no_injured,
+    @no_affected,
+    @no_homeless,
+    @total_affected,
+    @reconstruction_costs,
+    @reconstruction_costs_adjusted,
+    @insured_damage,
+    @insured_damage_adjusted,
+    @total_damage,
+    @total_damage_adjusted,
+    cpi,
+    @admin_units,
+    entry_date,
+    last_update
+)
+set
+    aid_contribution = nullif(@aid_contribution, ''),
+    magnitude = nullif(@magnitude, ''),
+    latitude = nullif(@latitude, ''),
+    longitude = nullif(@longitude, ''),
+    start_year = nullif(@start_year, ''),
+    start_month = nullif(@start_month, ''),
+    start_day = nullif(@start_day, ''),
+    end_year = nullif(@end_year, ''),
+    end_month = nullif(@end_month, ''),
+    end_day = nullif(@end_day, ''),
+    total_deaths = nullif(@total_deaths, ''),
+    no_injured = nullif(@no_injured, ''),
+    no_affected = nullif(@no_affected, ''),
+    no_homeless = nullif(@no_homeless, ''),
+    total_affected = nullif(@total_affected, ''),
+    reconstruction_costs = nullif(@reconstruction_costs, ''),
+    reconstruction_costs_adjusted = nullif(@reconstruction_costs_adjusted, ''),
+    insured_damage = nullif(@insured_damage, ''),
+    insured_damage_adjusted = nullif(@insured_damage_adjusted, ''),
+    total_damage = nullif(@total_damage, ''),
+    total_damage_adjusted = nullif(@total_damage_adjusted, '');
 
--- verify that you imported 13120 rows
-select count(*) from gdp;
+-- remove data from years not covered in World Bank datasets (2024+)
+delete from emdat
+where start_year > 2023;
 
--- verify that the data looks good
-select * from gdp;
-
--- create emdat table
-drop table if exists emdat;
-CREATE TABLE emdat (
-    disaster_id VARCHAR(50),
-    historic VARCHAR(3),
-    classification_key VARCHAR(50),
-    disaster_group VARCHAR(50),
-    disaster_subgroup VARCHAR(50),
-    disaster_type VARCHAR(50),
-    disaster_subtype VARCHAR(50),
-    external_ids VARCHAR(255),
-    event_name VARCHAR(255),
-    iso_code VARCHAR(10),
-    country VARCHAR(100),
-    subregion VARCHAR(100),
-    region VARCHAR(100),
-    location TEXT,
-    origin VARCHAR(50),
-    associated_types TEXT,
-    ofda_response VARCHAR(3),
-    appeal VARCHAR(3),
-    declaration VARCHAR(3),
-    aid_contribution DOUBLE,
-    magnitude DOUBLE,
-    magnitude_scale VARCHAR(50),
-    latitude DOUBLE,
-    longitude DOUBLE,
-    river_basin VARCHAR(100),
-    start_year INT,
-    start_month INT,
-    start_day INT,
-    end_year INT,
-    end_month INT,
-    end_day INT,
-    total_deaths INT,
-    no_injured INT,
-    no_affected INT,
-    no_homeless INT,
-    total_affected INT,
-    reconstruction_costs DOUBLE,
-    reconstruction_costs_adjusted DOUBLE,
-    insured_damage DOUBLE,
-    insured_damage_adjusted DOUBLE,
-    total_damage DOUBLE,
-    total_damage_adjusted DOUBLE,
-    cpi DOUBLE,
-    admin_units VARCHAR(255),
-    entry_date DATE,
-    last_update DATE,
-    FOREIGN KEY (iso_code) REFERENCES iso(iso_code)
-);
-
--- populate emdat table, please verify you are using the correct filepath
-LOAD DATA LOCAL 
-INFILE '/Users/emiliasantos/Documents/cs3200/gdp_code.py/matched_emdat.csv' 
-INTO TABLE emdat
-FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-IGNORE 1 ROWS;
-
--- verify that you imported 16418 rows
-SELECT count(*) FROM emdat;
-
--- verify that the data looks good
-SELECT * FROM emdat;
-
--- update any 0 values to be NULL
-UPDATE emdat
-SET
-    reconstruction_costs = NULL
-WHERE reconstruction_costs = 0;
-
-UPDATE emdat
-SET
-    reconstruction_costs_adjusted = NULL
-WHERE reconstruction_costs_adjusted = 0;
-
-UPDATE emdat
-SET
-    insured_damage = NULL
-WHERE insured_damage = 0;
-
-UPDATE emdat
-SET
-    insured_damage_adjusted = NULL
-WHERE insured_damage_adjusted = 0;
-
-UPDATE emdat
-SET
-    total_damage = NULL
-WHERE total_damage = 0;
-
-UPDATE emdat
-SET
-    total_damage_adjusted = NULL
-WHERE total_damage_adjusted = 0;
-
-UPDATE emdat
-SET
-    end_day = NULL
-WHERE end_day = 0;
-
-UPDATE emdat
-SET
-    start_day = NULL
-WHERE start_day = 0;
-
-UPDATE emdat
-SET
-    start_month = NULL
-WHERE start_month = 0;
-
-UPDATE emdat
-SET
-    end_month = NULL
-WHERE end_month = 0;
-
-UPDATE emdat
-SET
-    start_year = NULL
-WHERE start_year = 0;
-
-UPDATE emdat
-SET
-    end_year = NULL
-WHERE end_year = 0;
-
-UPDATE emdat
-SET
-    total_deaths = NULL
-WHERE total_deaths = 0;
-
-UPDATE emdat
-SET
-    no_injured = NULL
-WHERE no_injured = 0;
-
-UPDATE emdat
-SET
-    no_affected = NULL
-WHERE no_affected = 0;
-
-UPDATE emdat
-SET
-    no_homeless = NULL
-WHERE no_homeless = 0;
-
-UPDATE emdat
-SET
-    total_affected = NULL
-WHERE total_affected = 0;
-
-UPDATE emdat
-SET
-    aid_contribution = NULL
-WHERE aid_contribution = 0;
-
-UPDATE emdat
-SET
-    latitude = NULL
-WHERE latitude = 0;
-
-UPDATE emdat
-SET
-    magnitude = NULL
-WHERE magnitude = 0;
-
-UPDATE emdat
-SET
-    longitude = NULL
-WHERE longitude = 0;
-
-ALTER TABLE emdat ADD COLUMN id CHAR(7);
-UPDATE emdat
-SET id = CONCAT(iso_code, LPAD(start_year, 4, '0'));
-
-
-DELETE FROM emdat
-WHERE start_year IN (2024, 2025);
-
-ALTER TABLE emdat
-ADD CONSTRAINT fk_emdat_gdp
-FOREIGN KEY (id) REFERENCES gdp(id);
-
-
--- dropping the attributes below because they will not be useful in our analysis
-alter table emdat
-drop column external_ids,
-drop column location,
-drop column origin,
-drop column associated_types,
-drop column admin_units;
-
-describe emdat;
-
--- update existing adjusted columns to reflect constant 2015 usd (based on OECD inflation data)
+-- assign id to match gdp(id) foreign key
 update emdat
-set reconstruction_costs_adjusted = reconstruction_costs_adjusted * 0.7149
-where reconstruction_costs_adjusted is not null;
+set id = concat(iso, start_year)
+where start_year is not null and iso is not null;
 
-update emdat
-set insured_damage_adjusted = insured_damage_adjusted * 0.7149
-where insured_damage_adjusted is not null;
-
-update emdat
-set total_damage_adjusted = total_damage_adjusted * 0.7149
-where total_damage_adjusted is not null;
+-- inflation adjustment to 2015 usd
+update emdat set reconstruction_costs_adjusted = reconstruction_costs_adjusted * 0.7149 where reconstruction_costs_adjusted is not null;
+update emdat set insured_damage_adjusted = insured_damage_adjusted * 0.7149 where insured_damage_adjusted is not null;
+update emdat set total_damage_adjusted = total_damage_adjusted * 0.7149 where total_damage_adjusted is not null;
 
 
--- create urban population table
+-- urban population
 drop table if exists urb_pop;
 create table urb_pop (
-	id CHAR(7),
+    id char(7),
     iso_code char(3),
     year int,
     urb_pop_percentage double,
-	FOREIGN KEY(id) REFERENCES gdp(id),
-    FOREIGN KEY(iso_code) REFERENCES iso(iso_code)
+    foreign key (id) references gdp(id),
+    foreign key (iso_code) references iso(iso_code)
 );
 
--- populate urban population table, please verify you are using the correct file path
-load data local infile '/Users/emiliasantos/Documents/cs3200/gdp_code.py/wb_urban_pop_percentage.csv'
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_urban_pop_percentage.csv'
 into table urb_pop
-fields terminated by ',' optionally enclosed by '"'
-lines terminated by '\n'
-ignore 1 rows
+fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' ignore 1 rows
 (iso_code, year, @urb_pop_percentage)
-set 
-urb_pop_percentage = nullif(@urb_pop_percentage, ''),
-id = concat(iso_code, year);
+set urb_pop_percentage = nullif(@urb_pop_percentage, ''), id = concat(iso_code, year);
 
--- verify that you imported 13120 rows
-select count(*) from urb_pop;
-
--- verify that the data looks good
-select * from urb_pop;
-
--- create literacy rates table
+-- literacy rate
 drop table if exists lit_rate;
 create table lit_rate (
-	id CHAR(7) NOT NULL,
+    id char(7),
     iso_code char(3),
     year int,
     rate double,
-    FOREIGN KEY(id) REFERENCES gdp(id),
-    FOREIGN KEY(iso_code) REFERENCES iso(iso_code)
+    foreign key (id) references gdp(id),
+    foreign key (iso_code) references iso(iso_code)
 );
 
--- populate literacy rates table, please verify you are using the correct file path
-load data local infile '/Users/emiliasantos/Documents/cs3200/gdp_code.py/wb_literacy_rates.csv'
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_literacy_rates.csv'
 into table lit_rate
-fields terminated by ',' optionally enclosed by '"'
-lines terminated by '\n'
-ignore 1 rows
+fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' ignore 1 rows
 (iso_code, year, @rate)
-set rate = nullif(@rate, ''),
-id = concat(iso_code, year);
+set rate = nullif(@rate, ''), id = concat(iso_code, year);
 
--- verify that you imported 13120 rows
-select count(*) from lit_rate;
-
--- verify that the data looks good
-select * from lit_rate;
-
--- create life expectancy at birth table
+-- life expectancy
 drop table if exists life_exp;
-create table life_exp (    
-	id CHAR(7) NOT NULL,
-	iso_code char(3),
+create table life_exp (
+    id char(7),
+    iso_code char(3),
     year int,
     expectancy double,
-	FOREIGN KEY(id) REFERENCES gdp(id),
-    FOREIGN KEY(iso_code) REFERENCES iso(iso_code)
+    foreign key (id) references gdp(id),
+    foreign key (iso_code) references iso(iso_code)
 );
 
--- populate life expectancy at birth table, please verify you are using the correct file path
-load data local infile '/Users/emiliasantos/Documents/cs3200/gdp_code.py/wb_life_expectancy.csv'
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_life_expectancy.csv'
 into table life_exp
-fields terminated by ',' optionally enclosed by '"'
-lines terminated by '\n'
-ignore 1 rows
+fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' ignore 1 rows
 (iso_code, year, @expectancy)
-set expectancy = nullif(@expectancy, ''),
-id = concat(iso_code,year);
+set expectancy = nullif(@expectancy, ''), id = concat(iso_code, year);
 
--- verify that you imported 13120 rows
-select count(*) from life_exp;
-
--- verify that the data looks good
-select * from life_exp;
-
--- create international tourism table
+-- tourism
 drop table if exists int_tour;
-create table int_tour (    
-	id CHAR(7) NOT NULL,
-	iso_code char(3),
+create table int_tour (
+    id char(7),
+    iso_code char(3),
     year int,
     tourism double,
-	FOREIGN KEY(id) REFERENCES gdp(id),
-    FOREIGN KEY(iso_code) REFERENCES iso(iso_code)
+    foreign key (id) references gdp(id),
+    foreign key (iso_code) references iso(iso_code)
 );
 
--- populate tourism rates table, please verify you are using the correct filepath
-load data local infile '/Users/emiliasantos/Documents/cs3200/gdp_code.py/wb_tourism.csv'
+load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_tourism.csv'
 into table int_tour
-fields terminated by ',' optionally enclosed by '"'
-lines terminated by '\n'
-ignore 1 rows
+fields terminated by ',' optionally enclosed by '"' lines terminated by '\n' ignore 1 rows
 (iso_code, year, @tourism)
-set tourism = nullif(@tourism, ''),
-id = concat(iso_code, year);
-
--- verify that you imported 13120 rows
-select count(*) from int_tour;
-
--- verify that the data looks good
-select * from int_tour;
-
+set tourism = nullif(@tourism, ''), id = concat(iso_code, year);
