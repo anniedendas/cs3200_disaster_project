@@ -204,20 +204,22 @@ where total_damage_adjusted is not null;
 -- create GDP table
 drop table if exists gdp;
 create table gdp (
-	id int primary key auto_increment,
+    id varchar(10) foreign key,
     iso_code char(3),
     year int,
     gdp_per_capita double
 );
 
 -- populate GDP table, please verify you are using the correct filepath
-load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_gdp_per_capita.csv'
+load data local infile '/users/anniedendas/desktop/spring2025/cs3200/project/data/world_bank/wb_gdp_per_capita.csv'
 into table gdp
 fields terminated by ',' optionally enclosed by '"'
 lines terminated by '\n'
 ignore 1 rows
 (iso_code, year, @gdp_val)
-set gdp_per_capita = nullif(@gdp_val, '');
+set 
+    gdp_per_capita = nullif(@gdp_val, ''),
+    id = concat(iso_code, year);
 
 -- verify that you imported 13120 rows
 select count(*) from gdp;
@@ -343,6 +345,5 @@ select count(*) from iso;
 
 -- verify that the data looks good
 select * from iso;
-
 
 
