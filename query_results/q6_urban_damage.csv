@@ -1,0 +1,10 @@
+disaster_type,num_events,total_damage,avg_damage_per_event
+Storm,831,1560087624.65,1877361.76
+Earthquake,113,633712254.25,5608073.05
+Flood,459,336038889.41,732110.87
+Drought,50,161747404.67,3234948.09
+Wildfire,123,109613942.7,891170.27
+"Extreme temperature",27,32775624.96,1213912.04
+"Mass movement (wet)",22,2095785.11,95262.96
+"Volcanic activity",8,1349040.61,168630.08
+Infestation,1,151799.01,151799.01
