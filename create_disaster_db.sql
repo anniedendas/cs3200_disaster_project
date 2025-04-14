@@ -1,5 +1,5 @@
 -- FILE TO INSTALL EMDAT DATABASE ON MYSQL, NEED TO INSERT YOUR OWN 
--- FILEPATH WHERE IT SAYS '/Users/shefaliverma/Downloads/EMDATdata1960-2025allcountries.csv' "
+-- FILEPATHS WHERE APPLICABLE
 
 show variables where variable_name like '%local%';
 set global local_infile=ON;
@@ -59,7 +59,7 @@ CREATE TABLE emdat (
     last_update DATE
 );
 
--- populate emdat table
+-- populate emdat table, please verify you are using the correct filepath
 LOAD DATA LOCAL 
 INFILE '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/matched_emdat.csv' 
 INTO TABLE emdat
@@ -210,7 +210,7 @@ create table gdp (
     gdp_per_capita double
 );
 
--- populate GDP table
+-- populate GDP table, please verify you are using the correct filepath
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_gdp_per_capita.csv'
 into table gdp
 fields terminated by ',' optionally enclosed by '"'
@@ -234,7 +234,7 @@ create table urb_pop (
     urb_pop_percentage double
 );
 
--- populate urban population table
+-- populate urban population table, please verify you are using the correct file path
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_urban_pop_percentage.csv'
 into table urb_pop
 fields terminated by ',' optionally enclosed by '"'
@@ -258,7 +258,7 @@ create table lit_rate (
     rate double
 );
 
--- populate literacy rates table
+-- populate literacy rates table, please verify you are using the correct file path
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_literacy_rates.csv'
 into table lit_rate
 fields terminated by ',' optionally enclosed by '"'
@@ -282,7 +282,7 @@ create table life_exp (
     expectancy double
 );
 
--- populate life expectancy at birth table
+-- populate life expectancy at birth table, please verify you are using the correct file path
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_life_expectancy.csv'
 into table life_exp
 fields terminated by ',' optionally enclosed by '"'
@@ -306,7 +306,7 @@ create table int_tour (
     tourism double
 );
 
--- populate tourism rates table
+-- populate tourism rates table, please verify you are using the correct filepath
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_tourism.csv'
 into table int_tour
 fields terminated by ',' optionally enclosed by '"'
@@ -325,11 +325,11 @@ select * from int_tour;
 drop table if exists iso;
 create table iso (
     id int primary key auto_increment,
-    iso_code char(3) unique not null,
+    iso_code varchar(3) unique not null,
     country_name varchar(255) unique not null
 );
 
--- populate the table
+-- populate the table, please verify you are using the correct filepath
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/iso.csv'
 into table iso
 fields terminated by ',' 
@@ -338,7 +338,7 @@ lines terminated by '\n'
 ignore 1 rows
 (iso_code, country_name);
 
--- verify that you imported 205 rows
+-- verify that you imported 246 rows
 select count(*) from iso;
 
 -- verify that the data looks good
