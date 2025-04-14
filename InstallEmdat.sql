@@ -325,8 +325,8 @@ select * from int_tour;
 drop table if exists iso;
 create table iso (
     id int primary key auto_increment,
-    iso_code varchar(3) not null,
-    country_name varchar(255) not null
+    iso_code varchar(3) unique not null,
+    country_name varchar(255) unique not null
 );
 
 -- populate the table
