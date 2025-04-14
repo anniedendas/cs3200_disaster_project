@@ -204,6 +204,7 @@ where total_damage_adjusted is not null;
 -- create GDP table
 drop table if exists gdp;
 create table gdp (
+	id int primary key auto_increment,
     iso_code char(3),
     year int,
     gdp_per_capita double
@@ -227,6 +228,7 @@ select * from gdp;
 -- create urban population table
 drop table if exists urb_pop;
 create table urb_pop (
+	id int primary key auto_increment,
     iso_code char(3),
     year int,
     urb_pop_percentage double
@@ -248,8 +250,9 @@ select count(*) from urb_pop;
 select * from urb_pop;
 
 -- create literacy rates table
-drop table if exists lit_rates;
-create table lit_rates (
+drop table if exists lit_rate;
+create table lit_rate (
+	id int primary key auto_increment,
     iso_code char(3),
     year int,
     rate double
@@ -257,7 +260,7 @@ create table lit_rates (
 
 -- populate literacy rates table
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/world_bank/wb_literacy_rates.csv'
-into table lit_rates
+into table lit_rate
 fields terminated by ',' optionally enclosed by '"'
 lines terminated by '\n'
 ignore 1 rows
@@ -265,14 +268,15 @@ ignore 1 rows
 set rate = nullif(@rate, '');
 
 -- verify that you imported 13120 rows
-select count(*) from lit_rates;
+select count(*) from lit_rate;
 
 -- verify that the data looks good
-select * from lit_rates;
+select * from lit_rate;
 
 -- create life expectancy at birth table
 drop table if exists life_exp;
 create table life_exp (    
+	id int primary key auto_increment,
 	iso_code char(3),
     year int,
     expectancy double
@@ -296,6 +300,7 @@ select * from life_exp;
 -- create international tourism table
 drop table if exists int_tour;
 create table int_tour (    
+	id int primary key auto_increment,
 	iso_code char(3),
     year int,
     tourism double
@@ -319,17 +324,19 @@ select * from int_tour;
 -- create ISO table (maps ISO codes to country names)
 drop table if exists iso;
 create table iso (
-	iso_code varchar(3) primary key,
+    id int primary key auto_increment,
+    iso_code varchar(3),
     country_name varchar(255) not null
 );
 
 -- populate the table
 load data local infile '/Users/anniedendas/Desktop/Spring2025/CS3200/Project/data/iso.csv'
 into table iso
-fields terminated by ','
-enclosed by '"'
-lines terminated by '\n'
-ignore 1 rows;
+fields terminated by ',' 
+enclosed by '"' 
+lines terminated by '\n' 
+ignore 1 rows
+(iso_code, country_name);
 
 -- verify that you imported 205 rows
 select count(*) from iso;
