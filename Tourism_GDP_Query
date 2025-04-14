@@ -1,0 +1,33 @@
+
+SELECT 
+    yd.iso,
+    i.country_name,
+    yd.start_year AS year,
+    yd.disaster_type,
+    yd.disaster_count,
+    yd.total_economic_damage,
+    g.gdp_per_capita,
+    t_before.arrivals AS tourism_previous_year,
+    t_current.arrivals AS tourism_disaster_year,
+    t_after.arrivals AS tourism_following_year,
+
+    CASE 
+      WHEN t_before.arrivals IS NOT NULL AND t_current.arrivals IS NOT NULL THEN
+        ROUND((t_current.arrivals - t_before.arrivals) / t_before.arrivals * 100, 2)
+      ELSE NULL
+    END AS percent_change_during_year,
+
+    CASE 
+      WHEN t_before.arrivals IS NOT NULL AND t_after.arrivals IS NOT NULL THEN
+        ROUND((t_after.arrivals - t_before.arrivals) / t_before.arrivals * 100, 2)
+      ELSE NULL
+    END AS percent_change_after_one_year
+
+FROM yearly_disasters yd
+JOIN iso i ON yd.iso = i.iso_code
+JOIN gdp g ON yd.iso = g.iso_code AND yd.start_year = g.year
+JOIN tourism_data t_current ON yd.iso = t_current.iso_code AND yd.start_year = t_current.year
+JOIN tourism_data t_before ON yd.iso = t_before.iso_code AND t_before.year = yd.start_year - 1
+JOIN tourism_data t_after ON yd.iso = t_after.iso_code AND t_after.year = yd.start_year + 1
+
+ORDER BY yd.start_year, yd.iso, yd.disaster_type;
