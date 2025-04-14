@@ -1,5 +1,7 @@
-use disasters;
 -- PLEASE NOTE THAT ALL QUERIES BELOW ARE USING NATURAL DISASTER EVENTS FROM 1960-2025
+-- this file contains all queries on our database for the project
+
+use disasters;
 
 -- query one: does a higher average GDP per capita (in constant 2015 USD) correlate with fewer 
 -- deaths per flood event among countries that have experienced at least three flood disasters,
@@ -102,4 +104,77 @@ group by
     e.iso, i.country_name, e.start_year
 order by 
     e.iso, e.start_year;
+
+-- query 6: which types of disasters cause the most economic damage in countries with high urban density? 
+select 
+    e.disaster_type,
+    count(e.disaster_id) as num_events,
+    round(sum(e.total_damage_adjusted), 2) as total_damage,
+    round(avg(e.total_damage_adjusted), 2) as avg_damage_per_event
+from emdat e
+join urb_pop u on e.iso = u.iso_code and e.start_year = u.year
+where 
+    e.total_damage_adjusted is not null
+    and u.urb_pop_percentage > 75
+group by 
+    e.disaster_type
+order by 
+    total_damage desc;
+
+-- query 7: How do major natural disasters (specifically floods, hurricanes, and earthquakes) affect international
+-- tourism levels in affected countries, and how long does it take for tourism to recover?
+with yearly_disasters as (
+  select 
+    e.iso,
+    e.start_year,
+    e.disaster_type,
+    count(*) as disaster_count,
+    round(sum(e.total_damage_adjusted), 2) as total_economic_damage
+  from emdat e
+  where 
+    e.total_damage_adjusted is not null
+    and e.disaster_type in ('flood', 'hurricane', 'earthquake')
+  group by e.iso, e.start_year, e.disaster_type
+),
+tourism_data as (
+  select 
+    iso_code,
+    year,
+    round(max(tourism), 2) as arrivals
+  from int_tour
+  group by iso_code, year
+)
+
+select 
+    yd.iso,
+    i.country_name,
+    yd.start_year as year,
+    yd.disaster_type,
+    yd.disaster_count,
+    yd.total_economic_damage,
+    round(g.gdp_per_capita, 2) as gdp_per_capita,
+    t_before.arrivals as tourism_previous_year,
+    t_current.arrivals as tourism_disaster_year,
+    t_after.arrivals as tourism_following_year,
+
+    case 
+      when t_before.arrivals is not null and t_current.arrivals is not null then
+        round((t_current.arrivals - t_before.arrivals) / t_before.arrivals * 100, 2)
+      else null
+    end as percent_change_during_year,
+
+    case 
+      when t_before.arrivals is not null and t_after.arrivals is not null then
+        round((t_after.arrivals - t_before.arrivals) / t_before.arrivals * 100, 2)
+      else null
+    end as percent_change_after_one_year
+
+from yearly_disasters yd
+join iso i on yd.iso = i.iso_code
+join gdp g on yd.iso = g.iso_code and yd.start_year = g.year
+join tourism_data t_current on yd.iso = t_current.iso_code and yd.start_year = t_current.year
+join tourism_data t_before on yd.iso = t_before.iso_code and t_before.year = yd.start_year - 1
+join tourism_data t_after on yd.iso = t_after.iso_code and t_after.year = yd.start_year + 1
+
+order by yd.start_year, yd.iso, yd.disaster_type;
 
